@@ -26,6 +26,7 @@ struct option long_options[] = {
 
 void option (int argc, char *argv[], int *take, bool *f, char *filter,
              bool *s, char *sort, bool *upper, int *op) {
+
     int opt;
 
     while ((opt = getopt_long(argc, argv, "hf:s:u:", long_options, NULL)) != -1) {
@@ -36,8 +37,9 @@ void option (int argc, char *argv[], int *take, bool *f, char *filter,
                 break;
 
             case 'f':
-                *f = true;
-                memcpy(filter, optarg, strlen(optarg) + 1);
+                *f = true; // ca sert a quoi ??
+                memcpy(filter, optarg, strlen(optarg) + 1); // optarg ,? je sais que c'est la valeur
+                                                           // mais comment il l'a reconnais
                 break;
             case 's':
                 *s = true;
@@ -51,6 +53,8 @@ void option (int argc, char *argv[], int *take, bool *f, char *filter,
                 break;
         }
     }
+    // dans le cas ou  optind >= argc ==> yas des arguement non passer 
+
 
     if (optind <= argc) {
         // if (optind == argc) {
@@ -59,6 +63,7 @@ void option (int argc, char *argv[], int *take, bool *f, char *filter,
         *op = optind;
         *take = argc - optind;
     }
+
 }
 
 void usage(char *argv[]) {
