@@ -86,8 +86,7 @@ int main(int argc, char *argv[])
 		while (fgets(line, sizeof(line), f) != NULL)
 		{
 			size_t len = strlen(line);
-			if (len > 0 && line[len - 1] == '\n')
-			{
+			if (len > 0 && line[len - 1] == '\n'){
 				line[len - 1] = '\0';
 				--len;
 			}

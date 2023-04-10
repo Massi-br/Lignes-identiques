@@ -105,6 +105,7 @@ void option (int argc, char *argv[], int *take, bool *f, char *filter,
     }
     if (optind == argc){
         printf("No file name specified.\n");
+        exit(EXIT_FAILURE);
     }  
 }
 
