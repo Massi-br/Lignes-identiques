@@ -62,34 +62,50 @@ void option (int argc, char *argv[], int *take, bool *f, char *filter,
                 usage(argv);
                 exit(EXIT_SUCCESS);
                 break;
-
             case 'f':
+                if (optarg == NULL){
+                    fprintf(stderr, "Option -f requires an argument.\n");
+                    exit(EXIT_FAILURE);
+                }
                 *f = true; 
                 memcpy(filter, optarg, strlen(optarg) + 1); 
                 break;
             case 's':
+                if (optarg == NULL){
+                    fprintf(stderr, "Option -s requires an argument.\n");
+                    exit(EXIT_FAILURE);
+                }
                 *s = true;
                 memcpy(sort, optarg, strlen(optarg) + 1);
                 break;
             case 'u':
+                if (optarg == NULL){
+                    fprintf(stderr, "Option -u requires an argument.\n");
+                    exit(EXIT_FAILURE);
+                }
                 *upper = true;
                 break;
             default:
-                // nothing
+                usage(argv);
+                exit(EXIT_FAILURE);
                 break;
         }
     }
-    // dans le cas ou  optind >= argc ==> yas des arguement non passer 
-
-
-    if (optind <= argc) {
-        // if (optind == argc) {
-        //     // traitement à faire sur 'stdin'
-        // }else {
+    if (optind < argc) {
+        printf("%s", argv[optind]);
+        for (int i = optind + 1; i < argc; i++) {
+            printf("\t%s", argv[i]);
+        }
+        printf("\n");
         *op = optind;
         *take = argc - optind;
     }
+        if (optind < argc) {
 
+    }
+    if (optind == argc){
+        printf("No file name specified.\n");
+    }  
 }
 
 void usage(char *argv[]) {
