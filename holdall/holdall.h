@@ -105,7 +105,7 @@ extern int holdall_apply_context2(holdall *ha,
 #error "Only <holdall.h> is allowed to define HOLDALL_WANT_EXT."
 #endif
 
-// #define HOLDALL_WANT_EXT 1
+#define HOLDALL_WANT_EXT 1
 
 #if defined HOLDALL_WANT_EXT && HOLDALL_WANT_EXT != 0
 
