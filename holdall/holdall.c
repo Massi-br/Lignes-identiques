@@ -84,11 +84,6 @@ int holdall_apply(holdall *ha,
   return 0;
 }
 
-// int holdall_apply_(holdall *ha, 
-//   int (*fun1)(void *), int (*fun2)(void *)) {
-
-//   }
-
 
 int holdall_apply_context(holdall *ha,
     void *context, void *(*fun1)(void *context, void *ptr),
@@ -114,30 +109,22 @@ int holdall_apply_context2(holdall *ha,
   return 0;
 }
 
-// int holdall_apply_context4(holdall *ha,
-//     void *context1, void *(*fun1)(void *context1, void *ptr),
-//     void *context2,
-//     int (*fun2)(void *context2, void *ptr, void *resultfun1)) {
-//   for (const choldall *p = ha->head; p != NULL; p = p->next) {
-//     int r = fun2(context2, p->ref, fun1(context1, p->ref));
-//     if (r != 0) {
-//       return r;
-//     }
-//   }
-//   return 0;
-// }
-
-#if defined HOLDALL_WANT_EXT && HOLDALL_WANT_EXT != 0
-
-// 
-#define MOVE_HEAD(dst, src, next_)         \
+// MOVE_HEAD : copie le contenu du pointeur dont l'adressse est 
+// spécifié par src vers le pointeur dont l'adresse est dst et 
+// met à jour *src en pointant vers l'élement spécifié par next
+//  de *src et dst en pointant vers le pointeur de l'élemetn next
+// de dst.
+#define MOVE_HEAD(dst, src, next)          \
     *dst = *src ;                          \
-    *src = (*src)->next_ ;                 \
-    dst  = &(*dst)->next_;                 \
+    *src = (*src)->next ;                  \
+    dst  = &(*dst)->next ;                  
 
-// holdall_split : 
+// holdall_split : divise la liste d'adresse ha en deux sous-listes 
+// d'adresses respectives left et right. Elle itère sur les elements
+// de la liste d'adresse ha en déplaçant l'élement de tête vers left
+// et le suivant vers right.
 static void holdall_split(choldall **ha, choldall **left, choldall **right) {
-  while ((*ha) != NULL) {
+  while((*ha) != NULL) {
     MOVE_HEAD(left,ha,next) ;
     if ((*ha) != NULL) {
       MOVE_HEAD(right,ha,next) ;
@@ -150,10 +137,11 @@ static void holdall_split(choldall **ha, choldall **left, choldall **right) {
   }
 }
 
-// holdall_merger : 
+// holdall_merger : fusionne deux sous-listes d'adresses respectives
+// left et right en une seule liste d'adresse donnée par ha.
 static void holdall_merger(choldall **ha, choldall **left, choldall **right, 
     int (*compar)(const void *, const void *) ) {
-  while (*left != NULL || *right != NULL) {
+  while(*left != NULL || *right != NULL) {
     if (*right == NULL 
     || (*left != NULL && compar((*left)->ref,(*right)->ref) < 0)) {
       MOVE_HEAD(ha,left,next) ;
@@ -163,7 +151,9 @@ static void holdall_merger(choldall **ha, choldall **left, choldall **right,
   }
 }
 
-// holdall_sort_ : 
+// holdall_sort_ : sans effet si la liste d'adresse ha contient
+// un élement. tri sinon la liste d'adresse ha selon la fonction
+// compar appliquée aux références qui y ont insérées avec succès.
 static void holdall_sort_(choldall **ha,
     int (*compar)(const void *, const void *)) {
   if ((*ha)->next == NULL) {
@@ -182,5 +172,3 @@ void holdall_sort(holdall *ha,
     int (*compar)(const void *, const void *)) {
   holdall_sort_(&(ha)->head, compar) ;
 }
-
-#endif

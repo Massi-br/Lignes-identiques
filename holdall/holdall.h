@@ -105,16 +105,12 @@ extern int holdall_apply_context2(holdall *ha,
 #error "Only <holdall.h> is allowed to define HOLDALL_WANT_EXT."
 #endif
 
-#define HOLDALL_WANT_EXT 1
-
-#if defined HOLDALL_WANT_EXT && HOLDALL_WANT_EXT != 0
-
 //  holdall_sort : trie le fourretout associé à ha selon la fonction compar
 //    appliquée aux références qui y ont insérées avec succès.
 extern void holdall_sort(holdall *ha,
     int (*compar)(const void *, const void *));
 
-#endif
+
 
 //------------------------------------------------------------------------------
 
